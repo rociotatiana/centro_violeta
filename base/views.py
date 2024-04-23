@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # Create your views here.
 from .models import Comunidad
 from .models import Registro_Intervencion
+from .forms import IntervencionForm
 
 def home(request):
     return render(request, 'base/home.html')
@@ -20,6 +21,27 @@ def ingresar_beneficiaria(request):
 def ingresar_intervencion(request):
     return render(request, 'ingresar_intervencion.html')
 
+def intervencion_form(request):
+    form = IntervencionForm()
+    if request.method == 'POST':
+        form = IntervencionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form}
+    return render(request, 'intervencion_form.html', context)
+
+def actualizar_intervencion(request, pk):
+    reg_intervencion = Registro_Intervencion.objects.get(id=pk)
+    form = IntervencionForm(instance=reg_intervencion)
+    
+    if request.method == 'POST':
+        form = IntervencionForm(request.POST, instance= reg_intervencion)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form}
+    return render(request, 'intervencion_form.html')
 def registro_intervencion(request, pk):
     registros = Registro_Intervencion.objects.get(pk=id)
     context = {'registros': registros}

@@ -1,22 +1,26 @@
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
-from .models import Room, User
+#from django.contrib.auth.forms import UserCreationForm
+from .models import Registro_Intervencion #, User
 
 
-class MyUserCreationForm(UserCreationForm):
+class IntervencionForm(ModelForm):
     class Meta:
-        model = User
-        fields = ['name', 'username', 'email', 'password1', 'password2']
+        model = Registro_Intervencion
+        fields = '__all__'
+#class MyUserCreationForm(UserCreationForm):
+#    class Meta:
+#        model = User
+#        fields = ['name', 'username', 'email', 'password1', 'password2']
 
 
-class RoomForm(ModelForm):
+class Form(ModelForm):
     class Meta:
-        model = Room
+        model = Registro_Intervencion
         fields = '__all__'
         exclude = ['host', 'participants']
 
 
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ['avatar', 'name', 'username', 'email', 'bio']
+#class UserForm(ModelForm):
+#    class Meta:
+#        model = User
+#        fields = ['avatar', 'name', 'username', 'email', 'bio']
