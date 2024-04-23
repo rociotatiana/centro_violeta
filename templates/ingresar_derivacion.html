@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container">
+    <h1>Nueva Planilla de Derivación</h1>
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Comuna</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Devolver comuna de programa de origen">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Programa Destino</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Ingrese Programa Destino">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Ingresar RUT Beneficiaria</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="18.687.166-9">
+        </div>
+        <div class="row">
+            <label for="exampleInputEmail1">Nombre Completo Beneficiaria</label>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Nombre Default">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" placeholder="Apellidos Default">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Descripción de Derivación</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+          </div>
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Ingresar Documentos</label>
+                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+        </form>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}
+
+comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL, null=True)
+programa_destino = models.ForeignKey(Programa, on_delete=models.SET_NULL, null=True)
+beneficiaria = models.ForeignKey(Beneficiaria, on_delete=models.SET_NULL, null=True)
+profesional_derivante = models.ForeignKey(Profesional, on_delete=models.CASCADE)
+descripcion = models.TextField()
+casos_judicializados = models.TextField()
+updated = models.DateTimeField(auto_now=True)
+created = models.DateTimeField(auto_now_add=True)

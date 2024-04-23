@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container">
+    <h1>Nuevo Registro de Intervención</h1>
+  <form method="POST" action="">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="exampleInputEmail1">Ingresar RUT Beneficiaria</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="18.687.166-9">
+    </div>
+    <div class="row">
+      <label for="exampleInputEmail1">Nombre Completo Beneficiaria</label>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Nombres">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Apellidos">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Descripción de Intervención</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Ingresar Documentos</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+    </form>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>
+{% endblock %}

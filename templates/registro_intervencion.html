@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Tus Registros de Intervención</h1>
+    <div>
+        {% for registro in registros %}
+        <div>
+            <h5>{{registro.rut_}}-- {{registro.ñe}}</h5>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
