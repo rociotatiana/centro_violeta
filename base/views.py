@@ -8,7 +8,7 @@ def home(request):
     return render(request, 'base/home.html')
 
 def perfil(request):
-    return render(request, 'perfil.html')
+    return render(request, 'base/perfil.html')
 
 def comunidades(request):
     comunidades = Comunidad.objects.all()
@@ -16,10 +16,10 @@ def comunidades(request):
     return render(request, 'base/comunidades.html', context)
 
 def ingresar_beneficiaria(request):
-    return render(request, 'ingresar_beneficiaria.html')
+    return render(request, 'base/ingresar_beneficiaria.html')
 
 def ingresar_intervencion(request):
-    return render(request, 'ingresar_intervencion.html')
+    return render(request, 'base/ingresar_intervencion.html')
 
 def intervencion_form(request):
     form = IntervencionForm()
@@ -39,16 +39,16 @@ def actualizar_intervencion(request, pk):
         form = IntervencionForm(request.POST, instance= reg_intervencion)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('base/home')
     context = {'form': form}
-    return render(request, 'intervencion_form.html')
+    return render(request, 'intervencion_form.html', context)
 def registro_intervencion(request, pk):
     registros = Registro_Intervencion.objects.get(pk=id)
     context = {'registros': registros}
-    return render(request, 'registro_intervencion.html', context)
+    return render(request, 'base/registro_intervencion.html', context)
 
 def ingresar_derivacion(request):
-    return render(request, 'ingresar_derivacion.html')
+    return render(request, 'base/ingresar_derivacion.html')
 # COMUNIDADES:
 # X Crear comunidades 
 
