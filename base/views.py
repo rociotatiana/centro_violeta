@@ -1,11 +1,41 @@
 from django.shortcuts import render, redirect
 # Create your views here.
+from django.db.models import Q
 from .models import Comunidad
 from .models import Registro_Intervencion
 from .forms import IntervencionForm
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 def home(request):
     return render(request, 'base/home.html')
+
+def loginPage(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'El usuario no existe')
+        
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'El usuario o la contraseña no existen')
+
+    context = {}
+    return render(request, 'base/login_register.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect ('home')
 
 def perfil(request):
     return render(request, 'base/perfil.html')
@@ -42,6 +72,7 @@ def actualizar_intervencion(request, pk):
             return redirect('base/home')
     context = {'form': form}
     return render(request, 'intervencion_form.html', context)
+
 def registro_intervencion(request, pk):
     registros = Registro_Intervencion.objects.get(pk=id)
     context = {'registros': registros}
@@ -49,6 +80,7 @@ def registro_intervencion(request, pk):
 
 def ingresar_derivacion(request):
     return render(request, 'base/ingresar_derivacion.html')
+
 # COMUNIDADES:
 # X Crear comunidades 
 
