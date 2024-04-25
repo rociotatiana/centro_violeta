@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 #from django.contrib.auth.forms import UserCreationForm
-from .models import Registro_Intervencion #, User
+from .models import Registro_Intervencion, User
 
 
 class IntervencionForm(ModelForm):

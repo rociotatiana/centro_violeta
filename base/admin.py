@@ -2,7 +2,9 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Beneficiaria
+from .models import User, Beneficiaria
+
+admin.site.register(User)
 admin.site.register(Beneficiaria)
 
 
@@ -14,9 +16,9 @@ admin.site.register(Comuna)
 
 from .models import Comunidad, Programa, Institucion
 
-admin.site.register(Comunidad)
 admin.site.register(Programa)
 admin.site.register(Institucion)
+admin.site.register(Comunidad)
 
 
 from .models import Registro_Intervencion

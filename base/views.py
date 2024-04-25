@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
-from .models import Comunidad
-from .models import Registro_Intervencion
+from .models import User, Comunidad, Registro_Intervencion
 from .forms import IntervencionForm
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
