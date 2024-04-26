@@ -56,6 +56,9 @@ def intervencion_form(request):
         if form.is_valid():
             form.save()
             return redirect('home')
+        else:
+            messages.error(request, 'Hay algo malo en el formulario')
+
     context = {'form': form}
     return render(request, 'intervencion_form.html', context)
 

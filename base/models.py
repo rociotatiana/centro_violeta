@@ -5,14 +5,12 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-    nombre = models.CharField(max_length=200, null=True)
-    apellido = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
     cargo_profesional = models.CharField(max_length=200, null=True)
     programa = models.ForeignKey('Programa', on_delete=models.CASCADE, null=True)
     avatar = models.ImageField(null=True, default="avatar.svg")
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 class Region(models.Model):
     nombre = models.CharField(max_length = 50)
     abreviatura = models.CharField(max_length = 5, null=True)
@@ -99,7 +97,7 @@ class Registro_Intervencion(models.Model):
     programa = models.ForeignKey(Programa, on_delete=models.SET_NULL, null=True)
     beneficiaria = models.ForeignKey(Beneficiaria, on_delete=models.SET_NULL, null=True)
     profesional = models.ForeignKey(User, on_delete=models.PROTECT, null=False)
-    descripcion_intervencion = models.TextField()
+    descripcion = models.TextField()
     #documento = models.FileField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
