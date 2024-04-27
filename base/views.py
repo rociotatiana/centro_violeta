@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
-from .models import User, Comunidad, Registro_Intervencion
-from .forms import IntervencionForm
+from .models import User, Comunidad, Registro_Intervencion, Beneficiaria
+from .forms import IntervencionForm, BeneficiariaForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -14,15 +14,15 @@ def home(request):
 
 def loginPage(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(email=user.email)
         except:
-            messages.error(request, 'El usuario no existe')
+            messages.error(request, print('El usuario no existe'))
         
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
@@ -43,11 +43,46 @@ def logoutUser(request):
 def perfil(request):
     return render(request, 'base/perfil.html')
 
+#@login_required(login_url='login')
+def tus_beneficiarias(request):
+    beneficiarias = Beneficiaria.objects.all()
+    context = {'beneficiarias': beneficiarias}
+    return render(request, 'base/tus_beneficiarias.html', context)
+
+#@login_required(login_url='login')
+def ingresar_beneficiaria(request):
+    form = BeneficiariaForm()
+    if request.method == 'POST':
+        form = BeneficiariaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form}
+    return render(request, 'base/beneficiaria_form.html', context)
 
 @login_required(login_url='login')
-def ingresar_beneficiaria(request):
-    return render(request, 'base/ingresar_beneficiaria.html')
+def actualizar_beneficiaria(request, pk):
+    beneficiaria = Beneficiaria.objects.get(id=pk)
+    form = BeneficiariaForm(instance=beneficiaria)
 
+    if request.user != beneficiaria.user:
+        return HttpResponse("No tienes permitida esta acción")
+    
+    if request.method == 'POST':
+        form = BeneficiariaForm(request.POST, instance= beneficiaria)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form}
+    return render(request, 'base/beneficiaria_form.html', context)
+
+@login_required(login_url='login')
+def eliminarBeneficiaria(request, pk):
+    beneficiaria = Beneficiaria.objects.get(id=pk)
+    if request.method == 'POST':
+        beneficiaria.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': beneficiaria})
 
 @login_required(login_url='login')
 def tus_registros(request):

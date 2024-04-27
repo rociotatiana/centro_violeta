@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+<h1>Tus Beneficiarias Registradas</h1>
+<a href="{% url 'ingresar_beneficiaria'%}"><button>Ingresar nueva Beneficiaria</button></a>
+<br>
+<br>
+    <div>
+        {% for beneficiaria in beneficiarias %}
+        <div class="card">
+            <div class="card-title">
+            <h5>{{ beneficiaria.rut }}-- {{ beneficiaria.nombre }} {{ beneficiaria.apellido }}</h5>
+        </div>
+        <div class="card-body">
+            <p> {{ beneficiaria.afp }}</p>
+            <p> {{ beneficiaria.seguro_medico }}</p>
+            <a href="{% url 'actualizar_beneficiaria'%}"><button>Editar</button></a>
+            <a href="{% url 'eliminar_beneficiaria'%}"><button class="btn-danger">Eliminar</button></a>
+        </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

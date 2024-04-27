@@ -1,6 +1,25 @@
-{% extends "layout.html" %}
-
+{% extends 'layout.html' %}
 {% block content %}
+
+<div class="container">
+  <h2>Nueva Beneficiaria</h2>
+  <form method="POST" action="">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form__group field">
+      <label> {{ field.label }}</label>
+      <div class="field">
+      {{ field }}
+    </div>
+    </div>
+    {% endfor %}
+
+    <input class="submit" type="submit" value="Guardar" />
+
+
+{% endblock content %}
+
+
 <div class="container">
   <h1>Ingresar Nueva Beneficiaria</h1>
   <form>
@@ -72,4 +91,3 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
-{% endblock %}
