@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+<h1>Tus Registros de Intervención</h1>
+<a href="{% url 'ingresar_intervencion'%}"><button>Crear Nuevo Registro</button></a>
+<br>
+<br>
+    <div>
+        {% for registro in registros %}
+        <div class="card">
+            <div class="card-title">
+            <h5>{{ registro.programa }}-- {{ registro.beneficiaria }}</h5>
+        </div>
+        <div class="card-body">
+            <p> {{ registro.descripcion }}</p>
+            <a href="{% url 'actualizar_intervencion' registro.id %}"><button>Editar</button></a>
+            <a href="{% url 'eliminar_intervencion' registro.id %}"><button class="btn-danger">Eliminar</button></a>
+        </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
