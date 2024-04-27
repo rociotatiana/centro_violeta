@@ -45,13 +45,6 @@ def perfil(request):
 
 
 @login_required(login_url='login')
-def comunidades(request):
-    comunidades = Comunidad.objects.all()
-    context = {'comunidades': comunidades}
-    return render(request, 'base/comunidades.html', context)
-
-
-@login_required(login_url='login')
 def ingresar_beneficiaria(request):
     return render(request, 'base/ingresar_beneficiaria.html')
 
@@ -92,19 +85,6 @@ def actualizar_intervencion(request, pk):
     context = {'form': form}
     return render(request, 'base/intervencion_form.html', context)
 
-
-@login_required(login_url='login')
-def registro_intervencion(request, pk):
-    registros = Registro_Intervencion.objects.get(pk=id)
-    context = {'registros': registros}
-    return render(request, 'base/registro_intervencion.html', context)
-
-
-@login_required(login_url='login')
-def ingresar_derivacion(request):
-    return render(request, 'base/ingresar_derivacion.html')
-
-
 @login_required(login_url='login')
 def eliminarIntervencion(request, pk):
     reg_intervencion = Registro_Intervencion.objects.get(id=pk)
@@ -113,3 +93,23 @@ def eliminarIntervencion(request, pk):
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': reg_intervencion})
 
+
+@login_required(login_url='login')
+def ingresar_derivacion(request):
+    return render(request, 'base/ingresar_derivacion.html')
+
+
+
+@login_required(login_url='login')
+def registro_intervencion(request, pk):
+    registros = Registro_Intervencion.objects.get(pk=id)
+    context = {'registros': registros}
+    return render(request, 'base/registro_intervencion.html', context)
+
+
+
+@login_required(login_url='login')
+def comunidades(request):
+    comunidades = Comunidad.objects.all()
+    context = {'comunidades': comunidades}
+    return render(request, 'base/comunidades.html', context)
