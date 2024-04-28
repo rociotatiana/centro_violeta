@@ -2,10 +2,53 @@
 {% block content %}
 
 <div class="container">
-    <h1>Holi</h1>
-    <a href="{% url 'tus_beneficiarias' %}"> <div class="card">
-        <div class="card-title"><h5>Tus Beneficiarias</h5></div>
-    </div></a>
+
+    <h2>Bienvenida/o</h2>
+    <br />
+  
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="#" class="card-img-top" alt="...">
+          <div class="card-body rounded-9">
+            <h5 class="card-title">Tus Beneficiarias</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, odit eligendi. Provident praesentium ipsa cumque quasi exercitationem nulla placeat optio culpa aliquam nostrum in, pariatur facilis nihil similique. Deleniti, incidunt?</p>
+            <br>
+            <a href="{% url 'tus_beneficiarias' %}">
+            <button>Ver Beneficiarias</button></a>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="#" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Tus Registros</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, odio quidem vitae, porro accusantium laudantium voluptates incidunt natus, mollitia minus ipsa? Quidem ea pariatur labore, at ipsa maxime deserunt quae!</p>
+            <br>
+            <a href="{% url 'tus_registros' %}">
+              <button>Ver Registros de Intervención</button></a>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="#" class="card-img-top" alt="..." width="300">
+          <div class="card-body">
+            <h5 class="card-title">Tus Derivaciones</h5>
+            <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate provident repudiandae aliquam quam magni commodi aut consequatur incidunt a esse! Dolor quas voluptatem, nisi laudantium blanditiis cupiditate mollitia molestiae beatae!</p>
+            <br>
+            <a href="{% url 'tus_derivaciones' %}">
+              <button>Ver Derivaciones</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
     {% for comunidad in comunidades %}
     <div>
         <h5>{{comunidad.id}} -- <a href=" url 'comunidades' {{comunidades.id}}"> {{comunidad.nombre}} </a></h5>

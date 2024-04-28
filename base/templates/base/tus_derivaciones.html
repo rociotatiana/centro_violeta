@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+<h1>Tus Derivaciones</h1>
+<a href="{% url 'ingresar_derivacion'%}"><button>Ingresar nueva Derivación</button></a>
+<br>
+<br>
+    <div>
+        {% for derivacion in derivaciones %}
+        <div class="card">
+            <div class="card-title">
+            <h5>Derivación a {{ derivacion.programa_destino }}-- {{ derivacion.beneficiaria }} </h5>
+        </div>
+        <div class="card-body">
+            <p> </p>
+            <p> </p>
+            <a href="{% url 'actualizar_derivacion' derivacion.id %}"><button>Editar</button></a>
+            <a href="{% url 'eliminar_derivacion' derivacion.id %}"><button class="btn-danger">Eliminar</button></a>
+        </div>
+        </div>
+        <br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

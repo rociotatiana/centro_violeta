@@ -90,7 +90,7 @@ class Planilla_Derivacion(models.Model):
         ordering = ['-updated', '-created']
 
     def __str__(self):
-        return self.programa_destino
+        return str(self.profesional_derivante)
     
 class Registro_Intervencion(models.Model):
     comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL, null=True)

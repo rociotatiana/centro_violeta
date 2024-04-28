@@ -21,8 +21,9 @@ admin.site.register(Institucion)
 admin.site.register(Comunidad)
 
 
-from .models import Registro_Intervencion
+from .models import Registro_Intervencion, Planilla_Derivacion
 
 admin.site.register(Registro_Intervencion)
+admin.site.register(Planilla_Derivacion)
 
 

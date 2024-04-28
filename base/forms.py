@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 #from django.contrib.auth.forms import UserCreationForm
-from .models import Registro_Intervencion, Beneficiaria
+from .models import Registro_Intervencion, Beneficiaria, Planilla_Derivacion
 
 
 class IntervencionForm(ModelForm):
@@ -13,6 +13,10 @@ class BeneficiariaForm(ModelForm):
         model = Beneficiaria
         fields = '__all__'
 
+class DerivacionForm(ModelForm):
+    class Meta:
+        model = Planilla_Derivacion
+        fields = '__all__'
         
 #class MyUserCreationForm(UserCreationForm):
 #    class Meta:

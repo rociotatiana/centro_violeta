@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
-from .models import User, Comunidad, Registro_Intervencion, Beneficiaria
-from .forms import IntervencionForm, BeneficiariaForm
+from .models import User, Comunidad, Registro_Intervencion, Beneficiaria, Planilla_Derivacion
+from .forms import IntervencionForm, BeneficiariaForm, DerivacionForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 def home(request):
     return render(request, 'base/home.html')
 
+## Inicio de sesión
 
 def loginPage(request):
     if request.method == 'POST':
@@ -33,7 +34,6 @@ def loginPage(request):
     context = {}
     return render(request, 'base/login_register.html', context)
 
-
 def logoutUser(request):
     logout(request)
     return redirect ('home')
@@ -42,6 +42,9 @@ def logoutUser(request):
 @login_required(login_url='login')
 def perfil(request):
     return render(request, 'base/perfil.html')
+
+
+## Vista de Beneficiarias 
 
 @login_required(login_url='login')
 def tus_beneficiarias(request):
@@ -84,9 +87,12 @@ def eliminarBeneficiaria(request, pk):
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': beneficiaria})
 
+
+## Vista de Registros Intervención
+
 @login_required(login_url='login')
 def tus_registros(request):
-    registros = Registro_Intervencion.objects.all(profesional=request.user.id)
+    registros = Registro_Intervencion.objects.filter(profesional=request.user.id)
     context = {'registros': registros}
     return render(request, 'base/tus_registros.html', context)
 
@@ -129,19 +135,55 @@ def eliminarIntervencion(request, pk):
     return render(request, 'base/delete.html', {'obj': reg_intervencion})
 
 
+## Vista de Derivaciones 
+
+
+@login_required(login_url='login')
+def tus_derivaciones(request):
+    derivaciones = Planilla_Derivacion.objects.filter(profesional_derivante=request.user.id)
+    context = {'derivaciones': derivaciones}
+    return render(request, 'base/tus_derivaciones.html', context)
+
+
 @login_required(login_url='login')
 def ingresar_derivacion(request):
-    return render(request, 'base/ingresar_derivacion.html')
+    form = DerivacionForm()
+    if request.method == 'POST':
+        form = DerivacionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
 
+    context = {'form': form}
+    return render(request, 'base/derivacion_form.html', context)
 
 
 @login_required(login_url='login')
-def registro_intervencion(request, pk):
-    registros = Registro_Intervencion.objects.get(pk=id)
-    context = {'registros': registros}
-    return render(request, 'base/registro_intervencion.html', context)
+def actualizar_derivacion(request, pk):
+    planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
+    form = DerivacionForm(instance=planilla_derivacion)
+
+    if request.user != planilla_derivacion.profesional_derivante:
+        return HttpResponse("No tienes permitida esta acción")
+    
+    if request.method == 'POST':
+        form = IntervencionForm(request.POST, instance= planilla_derivacion)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form}
+    return render(request, 'base/derivacion_form.html', context)
+
+@login_required(login_url='login')
+def eliminarDerivacion(request, pk):
+    planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
+    if request.method == 'POST':
+        planilla_derivacion.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': planilla_derivacion})
 
 
+## Vista de Comunidades
 
 @login_required(login_url='login')
 def comunidades(request):
