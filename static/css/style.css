@@ -49,7 +49,7 @@ p {
   font-size: 19px;
 }
 
-button, .submit {
+button, .submit, input {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   padding: 7px 13px;
@@ -59,6 +59,10 @@ button, .submit {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease 0s;
+}
+
+.btn-danger  {
+  background-color: crimson;
 }
 
 a {
@@ -95,16 +99,19 @@ a:hover {
   color: var(--action-color);
 } 
 
-button:hover, .submit:hover {
+button:hover, .submit:hover, input:hover {
   background-color: var(--action-color);
 
 }
 
+.btn-danger:hover  {
+  background-color: rgb(255, 0, 0);
+}
 
 /* NAVBAR */
 
 nav {
-  font-size: 17px;
+  font-size: 15px;
   background-color: var(--first-base-color);
 }
 .nav-link {
@@ -121,13 +128,13 @@ nav {
 }
 .navbar-brand {
 align-items: end;
-flex: 0 0 33.333%;
-max-width: 33.333%; 
+flex: 0 0 30%;
+max-width: 30%; 
 }
 
 #navbarScroll {
-flex: 0 0 66.666%; 
-max-width: 66.666%; 
+flex: 0 0 70%; 
+max-width: 70%; 
 }
 
 

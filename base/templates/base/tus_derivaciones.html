@@ -12,8 +12,8 @@
             <h5>Derivación a {{ derivacion.programa_destino }}-- {{ derivacion.beneficiaria }} </h5>
         </div>
         <div class="card-body">
-            <p> </p>
-            <p> </p>
+            <p> Resumen: {{ derivacion.descripcion }} </p>
+            <p> Casos Judicializados: {{ derivacion.casos_judicializados }} </p>
             <a href="{% url 'actualizar_derivacion' derivacion.id %}"><button>Editar</button></a>
             <a href="{% url 'eliminar_derivacion' derivacion.id %}"><button class="btn-danger">Eliminar</button></a>
         </div>

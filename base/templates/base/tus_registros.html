@@ -9,9 +9,11 @@
         {% for registro in registros %}
         <div class="card">
             <div class="card-title">
-            <h5>{{ registro.programa }}-- {{ registro.beneficiaria }}</h5>
+            <h5>{{ registro.programa }}-- {{ registro.beneficiaria }} | {{ beneficiaria.nombre }}</h5>
         </div>
         <div class="card-body">
+            <p> Monitora: {{ registro.profesional }}</p>
+            <p> Resumen:</p>
             <p> {{ registro.descripcion }}</p>
             <a href="{% url 'actualizar_intervencion' registro.id %}"><button>Editar</button></a>
             <a href="{% url 'eliminar_intervencion' registro.id %}"><button class="btn-danger">Eliminar</button></a>

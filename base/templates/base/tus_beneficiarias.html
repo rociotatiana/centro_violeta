@@ -9,11 +9,14 @@
         {% for beneficiaria in beneficiarias %}
         <div class="card">
             <div class="card-title">
-            <h5>{{ beneficiaria.rut }}-- {{ beneficiaria.nombre }} {{ beneficiaria.apellido }}</h5>
+            <h5>{{ beneficiaria.nombre }} {{ beneficiaria.apellido }} -- RUT: {{ beneficiaria.rut }}</h5>
         </div>
         <div class="card-body">
-            <p> {{ beneficiaria.afp }}</p>
-            <p> {{ beneficiaria.seguro_medico }}</p>
+            <p> Ingresada por: {{ beneficiaria.profesional_que_ingresa }}</p>
+            <p>Fecha Nacimiento: {{ beneficiaria.fecha_nacimiento }}</p>
+            <p> Situación Laboral: {{ beneficiaria.situacion_laboral }}</p>
+            <p> Número de hijos: {{ beneficiaria.numero_hijos }}</p>
+            <p> Casos Judicializados: {{ beneficiaria.casos_judicializados }}</p>
             <a href="{% url 'actualizar_beneficiaria' beneficiaria.id %}"><button>Editar</button></a>
             <a href="{% url 'eliminar_beneficiaria' beneficiaria.id %}"><button class="btn-danger">Eliminar</button></a>
         </div>

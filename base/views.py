@@ -60,6 +60,9 @@ def ingresar_beneficiaria(request):
         if form.is_valid():
             form.save()
             return redirect('home')
+        else:
+            messages.error(request, 'Has ingresado un valor no permitido')
+
     context = {'form': form}
     return render(request, 'base/beneficiaria_form.html', context)
 
@@ -93,7 +96,8 @@ def eliminarBeneficiaria(request, pk):
 @login_required(login_url='login')
 def tus_registros(request):
     registros = Registro_Intervencion.objects.filter(profesional=request.user.id)
-    context = {'registros': registros}
+    beneficiarias = Beneficiaria.objects.filter(profesional_que_ingresa = request.user.id)
+    context = {'registros': registros, 'beneficiarias': beneficiarias}
     return render(request, 'base/tus_registros.html', context)
 
 
@@ -123,6 +127,7 @@ def actualizar_intervencion(request, pk):
         if form.is_valid():
             form.save()
             return redirect('home')
+
     context = {'form': form}
     return render(request, 'base/intervencion_form.html', context)
 
