@@ -14,8 +14,8 @@
         <div class="card-body">
             <p> {{ beneficiaria.afp }}</p>
             <p> {{ beneficiaria.seguro_medico }}</p>
-            <a href="{% url 'actualizar_beneficiaria'%}"><button>Editar</button></a>
-            <a href="{% url 'eliminar_beneficiaria'%}"><button class="btn-danger">Eliminar</button></a>
+            <a href="{% url 'actualizar_beneficiaria' beneficiaria.id %}"><button>Editar</button></a>
+            <a href="{% url 'eliminar_beneficiaria' beneficiaria.id %}"><button class="btn-danger">Eliminar</button></a>
         </div>
         </div>
         <br>

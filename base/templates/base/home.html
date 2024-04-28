@@ -3,6 +3,9 @@
 
 <div class="container">
     <h1>Holi</h1>
+    <a href="{% url 'tus_beneficiarias' %}"> <div class="card">
+        <div class="card-title"><h5>Tus Beneficiarias</h5></div>
+    </div></a>
     {% for comunidad in comunidades %}
     <div>
         <h5>{{comunidad.id}} -- <a href=" url 'comunidades' {{comunidades.id}}"> {{comunidad.nombre}} </a></h5>

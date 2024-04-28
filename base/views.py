@@ -43,13 +43,13 @@ def logoutUser(request):
 def perfil(request):
     return render(request, 'base/perfil.html')
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 def tus_beneficiarias(request):
-    beneficiarias = Beneficiaria.objects.all()
+    beneficiarias = Beneficiaria.objects.filter(profesional_que_ingresa = request.user.id)
     context = {'beneficiarias': beneficiarias}
     return render(request, 'base/tus_beneficiarias.html', context)
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 def ingresar_beneficiaria(request):
     form = BeneficiariaForm()
     if request.method == 'POST':
@@ -65,7 +65,7 @@ def actualizar_beneficiaria(request, pk):
     beneficiaria = Beneficiaria.objects.get(id=pk)
     form = BeneficiariaForm(instance=beneficiaria)
 
-    if request.user != beneficiaria.user:
+    if request.user != beneficiaria.profesional_que_ingresa:
         return HttpResponse("No tienes permitida esta acción")
     
     if request.method == 'POST':
@@ -86,7 +86,7 @@ def eliminarBeneficiaria(request, pk):
 
 @login_required(login_url='login')
 def tus_registros(request):
-    registros = Registro_Intervencion.objects.all()
+    registros = Registro_Intervencion.objects.all(profesional=request.user.id)
     context = {'registros': registros}
     return render(request, 'base/tus_registros.html', context)
 
@@ -109,7 +109,7 @@ def actualizar_intervencion(request, pk):
     reg_intervencion = Registro_Intervencion.objects.get(id=pk)
     form = IntervencionForm(instance=reg_intervencion)
 
-    if request.user != reg_intervencion.user:
+    if request.user != reg_intervencion.profesional:
         return HttpResponse("No tienes permitida esta acción")
     
     if request.method == 'POST':
