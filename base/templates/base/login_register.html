@@ -6,25 +6,53 @@
 <div class="container">
     <form method="POST" action="">
         {% csrf_token %}
-
-        <div class="container">
+<div class="row">
+    <h2>Inicia Sesión</h2>
+    <div class="col-sm-6">
+        <div class="card card-login">
             <label>Email:</label>
             <input type="text" name="email" placeholder="Escriba Email">
-        </div>
 
-        <div class="container">
+
+
             <label>Contraseña:</label>
             <input type="password" name="password" placeholder="Escriba Contraseña">
-        </div>
 
-        <div class="container">
-            <input class="submit" type="submit" value="Login" />
+
+            <div class="container">
+                <input class="submit" type="submit" value="Login" />
+            </div>
         </div>
     </form>
-    <p>*Recuerda que debes iniciar sesion antes de poder hacer cualquier accion en la plataforma</p>
+</div>
+
+
+<div class="container">
+    <form method="POST" action="">
+        {% csrf_token %}
+<div class="row">
+    <h2>Inicia Sesión</h2>
+    <div class="col-sm-6">
+        <div class="card card-login">
+            <label>Email:</label>
+            <input type="text" name="email" placeholder="Escriba Email">
+
+
+
+            <label>Contraseña:</label>
+            <input type="password" name="password" placeholder="Escriba Contraseña">
+
+
+            <div class="container">
+                <input class="submit" type="submit" value="Register" />
+            </div></div>
+    </form>
+</div>
+</div>
+</div>
+<br>
+<p>*Recuerda que debes iniciar sesion antes de poder hacer cualquier accion en la plataforma</p>
 
 </div>
 
 {% endblock %}
-
-

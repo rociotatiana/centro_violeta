@@ -48,7 +48,6 @@ class Programa(models.Model):
     descripcion = models.TextField()
     comuna = models.ForeignKey(Comuna, on_delete=models.SET_NULL, null=True)
     institucion_origen = models.ForeignKey(Institucion, on_delete=models.SET_NULL, null=True)
-    #integrantes =
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
@@ -112,9 +111,13 @@ class Comunidad(models.Model):
     administrador = models.ForeignKey(User, on_delete=models.SET_NULL, null = True)
     nombre = models.CharField(max_length=50, null=False)
     descripcion = models.TextField()
-    #integrantes
+    participantes = models.ManyToManyField(
+        User, related_name='participantes', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-updated', '-created']
 
     def __str__(self):
         return self.nombre
@@ -125,10 +128,12 @@ class Informe_indicadores(models.Model):
 
 class Mensaje(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    comunidades = models.ForeignKey(Comunidad, on_delete=models.CASCADE, null=True)
+    comunidad = models.ForeignKey(Comunidad, on_delete=models.CASCADE, null=True)
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-updated', '-created']
     def __str__(self):
         return self.body[0:50]

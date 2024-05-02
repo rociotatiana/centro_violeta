@@ -2,18 +2,26 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
-from .models import User, Comunidad, Registro_Intervencion, Beneficiaria, Planilla_Derivacion
+from .models import User, Comunidad, Programa, Registro_Intervencion, Beneficiaria, Planilla_Derivacion, Mensaje
 from .forms import IntervencionForm, BeneficiariaForm, DerivacionForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
+## HOME 
 def home(request):
-    return render(request, 'base/home.html')
+    comunidades = Comunidad.objects.all()
+
+    programas = Programa.objects.all()
+    mensajes_comunidades = Mensaje.objects.all()
+
+    context = {'comunidades': comunidades, 'programas': programas, 'mensajes_comunidades': mensajes_comunidades}
+    return render(request, 'base/home.html', context)
 
 ## Inicio de sesión
 
 def loginPage(request):
+    page = "login"
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -31,13 +39,16 @@ def loginPage(request):
         else:
             messages.error(request, 'El usuario o la contraseña no existen')
 
-    context = {}
+    context = {'page': page}
     return render(request, 'base/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
     return redirect ('home')
 
+def registerUser(request):
+    page = 'register'
+    return render(request, 'base/login_register.html')
 
 @login_required(login_url='login')
 def perfil(request):
@@ -149,6 +160,12 @@ def tus_derivaciones(request):
     context = {'derivaciones': derivaciones}
     return render(request, 'base/tus_derivaciones.html', context)
 
+@login_required(login_url='login')
+def derivaciones_recibidas(request):
+    derivaciones = Planilla_Derivacion.objects.filter(programa_destino=request.user.programa)
+    context = {'derivaciones': derivaciones}
+    return render(request, 'base/derivaciones_recibidas.html', context)
+
 
 @login_required(login_url='login')
 def ingresar_derivacion(request):
@@ -191,7 +208,75 @@ def eliminarDerivacion(request, pk):
 ## Vista de Comunidades
 
 @login_required(login_url='login')
-def comunidades(request):
+def comunidad(request, pk):
+    comunidad = Comunidad.objects.get(id=pk)
+    comunidad_mensajes = comunidad.mensaje_set.all().order_by('-created')
+    participantes = comunidad.participantes.all()
+    if request.method == 'POST':
+        mensaje = Mensaje.objects.create(
+            usuario = request.user,
+            comunidad = comunidad,
+            body = request.POST.get('body')
+        )
+        comunidad.participantes.add(request.user)
+        return redirect('comunidad', pk=comunidad.id)
+    context = {'comunidad': comunidad, 'comunidad_mensajes': comunidad_mensajes, 
+               'participantes': participantes}
+    return render(request, 'base/comunidad.html', context)
+
+
+@login_required(login_url='login')
+def explora_comunidades(request):
     comunidades = Comunidad.objects.all()
     context = {'comunidades': comunidades}
-    return render(request, 'base/comunidades.html', context)
+    return render(request, 'base/explora_comunidades.html', context)
+
+
+@login_required(login_url='login')
+def ingresar_comunidad(request):
+    form = DerivacionForm()
+    if request.method == 'POST':
+        form = DerivacionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'base/derivacion_form.html', context)
+
+
+@login_required(login_url='login')
+def actualizar_comunidad(request, pk):
+    planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
+    form = DerivacionForm(instance=planilla_derivacion)
+
+    if request.user != planilla_derivacion.profesional_derivante:
+        return HttpResponse("No tienes permitida esta acción")
+    
+    if request.method == 'POST':
+        form = IntervencionForm(request.POST, instance= planilla_derivacion)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    context = {'form': form}
+    return render(request, 'base/derivacion_form.html', context)
+
+@login_required(login_url='login')
+def eliminarComunidad(request, pk):
+    planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
+    if request.method == 'POST':
+        planilla_derivacion.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': planilla_derivacion})
+
+
+## Eliminar Mensaje
+@login_required(login_url='login')
+def eliminarMensaje(request, pk):
+    mensaje = Mensaje.objects.get(id=pk)
+    if request.user != mensaje.usuario:
+        return HttpResponse("No puedes realizar esta accion")
+    if request.method == 'POST':
+        mensaje.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': mensaje})

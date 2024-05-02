@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="container">
-    <h1>Tus Comunidades</h1>
+    <h1>Explora Comunidades</h1>
     <div>
         {% for comunidad in comunidades %}
         <div>
-            <h5>{{comunidad.id}} -- <a href=" url 'comunidades' {{comunidades.id}}"> {{comunidad.nombre}} </a></h5>
+            <h5>{{comunidad.id}} -- <a href=" url 'comunidad' {{comunidad.id}}"> {{comunidad.nombre}} </a></h5>
         </div>
         {% endfor %}
     </div>
@@ -31,5 +31,14 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="container">
+    <h3>Actividad Reciente</h3>
+    {% for mensaje in mensajes_comunidades %}
+<div>
+    <small>@{{mensaje.usuario}}  {{mensaje.created|timesince}}</small>
+</div>
+    {% endfor %}
 </div>
 {% endblock content %}

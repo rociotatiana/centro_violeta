@@ -18,6 +18,7 @@
   padding: 0; 
 }
 .poppins-medium {
+
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-style: normal;
@@ -44,12 +45,15 @@ header, footer {
   padding: 10px;
 }
 
-p {
-  color: #5c6b7a;
+p, label {
+  color: #3d4f61;
   font-size: 19px;
 }
 
-button, .submit, input {
+.card-login {
+  background-color: #e6c4e3;
+}
+button, .submit input {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   padding: 7px 13px;
@@ -61,7 +65,11 @@ button, .submit, input {
   transition: all 0.3s ease 0s;
 }
 
-.btn-danger  {
+input, label {
+  padding: 5px;
+  margin: 10px 30px 10px 30px;
+}
+.btn-danger {
   background-color: crimson;
 }
 
@@ -99,7 +107,7 @@ a:hover {
   color: var(--action-color);
 } 
 
-button:hover, .submit:hover, input:hover {
+button:hover, .submit:hover {
   background-color: var(--action-color);
 
 }
