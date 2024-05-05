@@ -3,7 +3,7 @@
 <div class="container">
 <h1>Tus Derivaciones</h1>
 <a href="{% url 'ingresar_derivacion'%}"><button>Ingresar nueva Derivación</button></a>
-<a href="{% url 'ingresar_derivacion'%}"><button>Ver Derivaciones Recibidas</button></a>
+<a href="{% url 'tus_derivaciones'%}"><button>Ver Derivaciones Emitidas</button></a>
 
 <br>
 <br>
@@ -13,7 +13,8 @@
         {% for derivacion in derivaciones %}
         <div class="card">
             <div class="card-title">
-            <h5>Derivación a {{ derivacion.programa_destino }}-- {{ derivacion.beneficiaria }} </h5>
+            <h5>Desde Programa {{derivacion.profesional_derivante.programa}} - {{derivacion.profesional_derivante.programa.comuna}}</h5>
+            <h4>Derivación a {{ derivacion.programa_destino }}-- {{ derivacion.beneficiaria }} {{ derivacion.beneficiaria.nombre }} {{ derivacion.beneficiaria.apellido }}  </h4>
         </div>
         <div class="card-body">
             <p> Resumen: {{ derivacion.descripcion }} </p>

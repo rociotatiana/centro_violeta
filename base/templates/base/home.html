@@ -5,31 +5,12 @@
 
     <h2>Bienvenida/o {{ usuaria.nombre }} </h2>
     <br />
-    <button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">Off canvas</button>
-
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Que quieres hacer?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Programas Disponibles</h5>
-        {% for programa in programas %}
-        <p>{{programa.nombre}}</p>
-        {% endfor %}
-<br>
-        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Tus Comunidades</h5>
-        {% for comunidad in comunidades %}
-        <p>{{comunidad.nombre}}</p>
-        {% endfor %}
-      </div>
-
-      
-    </div>
-
+    {% include 'offcanvas_component.html' %}
+    <br>
+    <br>
     <div class="row">
       <div class="col-sm-4">
-        <div class="card">
+        <div class="card text-center">
           <img src="/static/img/beneficiarias_home.svg" class="card-img-top" alt="...">
           <div class="card-body rounded-9">
             <h5 class="card-title">Tus Beneficiarias</h5>
@@ -42,7 +23,7 @@
       </div>
   
       <div class="col-sm-4">
-        <div class="card">
+        <div class="card text-center">
           <img src="/static/img/registros_home.svg" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">Tus Registros</h5>
@@ -55,7 +36,7 @@
       </div>
   
       <div class="col-sm-4">
-        <div class="card">
+        <div class="card text-center">
           <img src="/static/img/derivaciones_home.svg" class="card-img-top" alt="..." width="300">
           <div class="card-body">
             <h5 class="card-title">Tus Derivaciones</h5>
@@ -70,12 +51,16 @@
   </div>
 <br><br>
 <div class="container">
-  <h2>Tus comunidades</h2>
+  <div class="container-fluid"><h2>Explora comunidades</h2><a href="{% url 'explora_comunidades' %}"><button>Quiero saber mas</button></a></div>
+  <br>
     {% for comunidad in comunidades %}
-    <div>
-        <h5>{{comunidad.id}} -- <a href="{% url 'comunidad' comunidad.id %}"> {{comunidad.nombre}} </a></h5>
-    </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{comunidad.id}} -- <a href="{% url 'comunidad' comunidad.id %}"> {{comunidad.nombre}} </a></h5>
+          <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
+          <br>
+          <a href="{% url 'tus_derivaciones' %}"></a></div></div><br>
     {% endfor %}
-</div>
+
 
 {% endblock %}

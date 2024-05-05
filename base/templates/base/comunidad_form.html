@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container">
+  <h2>Nueva Comunidad</h2>
+  <form method="POST" action="">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form__group field">
+      {% if field.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ field.errors }}
+      </div>
+      {% endif %}
+      <label> {{ field.label }}</label>
+      <div class="field">
+        {{ field }}
+      </div>
+    </div>
+    {% endfor %}
+
+    <input class="submit" type="submit" value="Guardar" />
+
+
+    {% endblock content %}
+

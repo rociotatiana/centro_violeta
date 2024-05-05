@@ -2,43 +2,69 @@
 
 {% block content %}
 <div class="container">
-    <h1>Explora Comunidades</h1>
-    <div>
-        {% for comunidad in comunidades %}
-        <div>
-            <h5>{{comunidad.id}} -- <a href=" url 'comunidad' {{comunidad.id}}"> {{comunidad.nombre}} </a></h5>
+    <div class="row">
+        <div class="col-sm-3">
+            <h4>Buscar por Temáticas</h4>
         </div>
-        {% endfor %}
-    </div>
-    <div class="media">
-        <img class="mr-3" src=".../64x64" alt="Generic placeholder image">
-        <div class="media-body">
-            <h5 class="mt-0">Media heading</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
-            vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec
-            lacinia congue felis in faucibus.
-
-            <div class="media mt-3">
-                <a class="pr-3" href="#">
-                    <img src=".../64x64" alt="Generic placeholder image">
-                </a>
+        <div class="col-sm-6">
+            <h1>Explora Comunidades</h1>
+            <div>
+<a href="{% url 'crear_comunidad' %}"></a><button>Crear una Comunidad</button></a>
+            </div>
+            {% for comunidad in comunidades %}
+            <div class="media">
                 <div class="media-body">
-                    <h5 class="mt-0">Media heading</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                    purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                    vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    <h5 class="mt-0">{{comunidad.id}} -- <a href="{% url 'comunidad' comunidad.id %}"> {{comunidad.nombre}} </a></h5>
+                    <p>{{comunidad.descripcion}}</p>
+                    {% if request.user == comunidad.administrador %}
+                    <a href="{% url 'actualizar_comunidad' comunidad.id %}">Editar</a>
+                    <a href="{% url 'eliminar_comunidad' comunidad.id %}">Eliminar</a>
+                    {% endif %}
                 </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="col-sm-3">
+            <h3>Actividad Reciente</h3>
+            {% for mensaje in mensajes_comunidades %}
+            <div>
+                <small>@{{mensaje.usuario}} {{mensaje.created|timesince}}</small>
+                <small>respondio a "{{mensaje.comunidad}}"</small>
+                <p>{{mensaje}}</p>
+                {% if request.user == mensaje.usuario %}
+                <a href="{% url 'eliminar_mensaje' mensaje.id %}">Eliminar</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<div class="media">
+    <img class="mr-3" src=".../64x64" alt="Generic placeholder image">
+    <div class="media-body">
+        <h5 class="mt-0">Media heading</h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
+        purus odio,
+        vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
+        fringilla. Donec
+        lacinia congue felis in faucibus.
+
+        <div class="media mt-3">
+            <a class="pr-3" href="#">
+                <img src=".../64x64" alt="Generic placeholder image">
+            </a>
+            <div class="media-body">
+                <h5 class="mt-0">Media heading</h5>
+                Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin.
+                Cras
+                purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac
+                nisi
+                vulputate fringilla. Donec lacinia congue felis in faucibus.
             </div>
         </div>
     </div>
 </div>
-
-<div class="container">
-    <h3>Actividad Reciente</h3>
-    {% for mensaje in mensajes_comunidades %}
-<div>
-    <small>@{{mensaje.usuario}}  {{mensaje.created|timesince}}</small>
-</div>
-    {% endfor %}
-</div>
-{% endblock content %}

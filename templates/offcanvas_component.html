@@ -1,0 +1,31 @@
+<button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+  aria-controls="offcanvasWithBothOptions">Que quieres hacer?</button>
+
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+  aria-labelledby="offcanvasWithBothOptionsLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Que quieres hacer?</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Beneficiarias</h5>
+    <p><a href="{% url 'tus_beneficiarias' %}">Tus Beneficiarias Ingresadas</a></p>
+    <p><a href="{% url 'ingresar_beneficiaria' %}">Ingresar Beneficiaria</a></p>
+    <br>
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Registros de Intervencion</h5>
+    <p><a href="{% url 'tus_registros' %}">Tus Registros Ingresados</a></p>
+    <p><a href="{% url 'ingresar_intervencion' %}">Ingresar Registro de Intervencion</a></p>
+    <br>
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Tus Derivaciones</h5>
+    <p><a href="{% url 'ingresar_derivacion' %}">Ingresar Derivacion</a></p>
+    <p><a href="{% url 'tus_derivaciones' %}">Tus Derivaciones Emitidas</a></p>
+    <p><a href="{% url 'derivaciones_recibidas' %}">Tus Derivaciones Recibidas</a></p>
+    <br>
+    <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Explora Comunidades</h5>
+    <p><a href="{% url 'explora_comunidades' %}">Comunidades Disponibles</a></p>
+
+    <br>
+  </div>
+
+
+</div>

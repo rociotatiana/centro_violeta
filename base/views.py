@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
 from .models import User, Comunidad, Programa, Registro_Intervencion, Beneficiaria, Planilla_Derivacion, Mensaje
-from .forms import IntervencionForm, BeneficiariaForm, DerivacionForm
+from .forms import IntervencionForm, BeneficiariaForm, DerivacionForm, ComunidadForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -185,9 +185,6 @@ def actualizar_derivacion(request, pk):
     planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
     form = DerivacionForm(instance=planilla_derivacion)
 
-    if request.user != planilla_derivacion.profesional_derivante:
-        return HttpResponse("No tienes permitida esta acción")
-    
     if request.method == 'POST':
         form = IntervencionForm(request.POST, instance= planilla_derivacion)
         if form.is_valid():
@@ -228,46 +225,47 @@ def comunidad(request, pk):
 @login_required(login_url='login')
 def explora_comunidades(request):
     comunidades = Comunidad.objects.all()
-    context = {'comunidades': comunidades}
+    mensajes_comunidades = Mensaje.objects.all()
+    context = {'comunidades': comunidades, 'mensajes_comunidades': mensajes_comunidades}
     return render(request, 'base/explora_comunidades.html', context)
 
 
 @login_required(login_url='login')
-def ingresar_comunidad(request):
-    form = DerivacionForm()
+def crear_comunidad(request):
+    form = ComunidadForm()
     if request.method == 'POST':
-        form = DerivacionForm(request.POST)
+        form = ComunidadForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('home')
 
     context = {'form': form}
-    return render(request, 'base/derivacion_form.html', context)
+    return render(request, 'base/comunidad_form.html', context)
 
 
 @login_required(login_url='login')
 def actualizar_comunidad(request, pk):
-    planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
-    form = DerivacionForm(instance=planilla_derivacion)
+    comunidad = Comunidad.objects.get(id=pk)
+    form = ComunidadForm(instance=comunidad)
 
-    if request.user != planilla_derivacion.profesional_derivante:
+    if request.user != comunidad.administrador:
         return HttpResponse("No tienes permitida esta acción")
     
     if request.method == 'POST':
-        form = IntervencionForm(request.POST, instance= planilla_derivacion)
+        form = ComunidadForm(request.POST, instance= comunidad)
         if form.is_valid():
             form.save()
             return redirect('home')
     context = {'form': form}
-    return render(request, 'base/derivacion_form.html', context)
+    return render(request, 'base/comunidad_form.html', context)
 
 @login_required(login_url='login')
 def eliminarComunidad(request, pk):
-    planilla_derivacion = Planilla_Derivacion.objects.get(id=pk)
+    comunidad = Comunidad.objects.get(id=pk)
     if request.method == 'POST':
-        planilla_derivacion.delete()
+        comunidad.delete()
         return redirect('home')
-    return render(request, 'base/delete.html', {'obj': planilla_derivacion})
+    return render(request, 'base/delete.html', {'obj': comunidad})
 
 
 ## Eliminar Mensaje

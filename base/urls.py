@@ -31,6 +31,9 @@ urlpatterns = [
 
     path('comunidad/<str:pk>', views.comunidad, name = "comunidad"),
     path('explora_comunidades', views.explora_comunidades, name = "explora_comunidades"),
+    path('crear_comunidad', views.crear_comunidad, name = "crear_comunidad"),
+    path('actualizar_comunidad/<str:pk>', views.actualizar_comunidad, name = "actualizar_comunidad"),
+    path('eliminar_comunidad/<str:pk>', views.eliminarComunidad, name = 'eliminar_comunidad'), 
     path('eliminar_mensaje/<str:pk>', views.eliminarMensaje, name = 'eliminar_mensaje'), 
 
 
