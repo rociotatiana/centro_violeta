@@ -1,0 +1,6 @@
+{
+    "workbench.view.alwaysShowHeaderActions": true,
+    "workbench.editor.autoLockGroups": {
+        "mainThreadWebview-markdown.preview": true
+    }
+}

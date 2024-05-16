@@ -8,7 +8,6 @@ git clone https://github.com/rociotatiana/centro_violeta.git
 
 --> Crea y activa un ambiente de desarrollo, puede ser con [miniconda](https://docs.anaconda.com/free/miniconda/index.html):
 ```bash
-# Let's install virtualenv first
 conda create myenv
 conda activate myenv
 ```
@@ -20,7 +19,7 @@ Instala Django
 sudo apt install python3-django
 ```
 
-#
+
 
 ### Correr la aplicación
 

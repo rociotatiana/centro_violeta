@@ -134,6 +134,10 @@ class Comunidad(models.Model):
         return self.nombre
     
 class Informe_indicadores(models.Model):
+    #total_beneficiarias =  count(Benfeiciairais)
+    #situacionlaboral =     #profesiones = beneficiarias.situacion_laboral
+    #nivel_educativo = grafico de niveleducativo
+
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
