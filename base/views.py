@@ -18,6 +18,9 @@ def home(request):
     context = {'comunidades': comunidades, 'programas': programas, 'mensajes_comunidades': mensajes_comunidades}
     return render(request, 'base/home.html', context)
 
+def dashboard(request):
+    return render (request, "base/dashboard.html")
+
 ## Inicio de sesión
 
 def loginPage(request):
