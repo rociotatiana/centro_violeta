@@ -281,3 +281,89 @@ def eliminarMensaje(request, pk):
         mensaje.delete()
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': mensaje})
+
+
+#### Gráficos #######
+
+import plotly.express as px
+from django.db.models.functions import TruncDate
+from django.db.models import Count
+
+import plotly.express as px
+from django.db.models.functions import TruncDate
+from django.db.models import Count
+from django.shortcuts import render
+from .models import Registro_Intervencion
+
+def chart_registros(request):
+    # Agrupar los registros por fecha y contar la cantidad de registros por cada fecha
+    registros = (
+        Registro_Intervencion.objects.filter(programa=request.user.programa)
+        .annotate(date=TruncDate('created'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    # Extraer las fechas y los conteos
+    dates = [r['date'] for r in registros]
+    counts = [r['count'] for r in registros]
+
+    # Determinar los límites del eje y 
+    y_min = 0
+    y_max = max(counts) + 10  
+
+    # Crear el gráfico con Plotly, añadiendo marcadores para los puntos
+    fig = px.line(
+        x=dates,
+        y=counts,
+        labels={'x': 'Fecha', 'y': 'Cantidad de Registros'},
+        title='Registros de Intervención por Día',
+        range_y=[y_min, y_max],
+        markers=True
+    )
+
+    # Convertir el gráfico a HTML
+    chart = fig.to_html()
+
+    # Pasar el gráfico al contexto del template
+    context = {'chart': chart}
+    return render(request, "base/chart.html", context)
+
+
+def chart_derivaciones_emitidas(request):
+    derivaciones = (
+        Planilla_Derivacion.objects.filter(profesional_derivante__programa=request.user.programa)
+        .annotate(date=TruncDate('created'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    # Extraer las fechas y los conteos
+    dates = [r['date'] for r in derivaciones]
+    counts = [r['count'] for r in derivaciones]
+
+    # Determinar los límites del eje y 
+    y_min = 0
+    y_max = max(counts) + 10  
+
+    # Crear el gráfico con Plotly, añadiendo marcadores para los puntos
+    fig = px.line(
+        x=dates,
+        y=counts,
+        labels={'x': 'Fecha', 'y': 'Cantidad de Derivaciones'},
+        title='Derivaciones por Día',
+        range_y=[y_min, y_max],
+        markers=True
+    )
+
+    # Convertir el gráfico a HTML
+    chart = fig.to_html()
+
+    # Pasar el gráfico al contexto del template
+    context = {'chart': chart}
+    return render(request, "base/chart2.html", context)
+
+def grafico_derivaciones_recibidas(request):
+    pass
