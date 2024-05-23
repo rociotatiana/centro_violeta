@@ -367,3 +367,80 @@ def chart_derivaciones_emitidas(request):
 
 def grafico_derivaciones_recibidas(request):
     pass
+
+
+def graficos(request):
+    # Gráfico de Registros
+    registros = (
+        Registro_Intervencion.objects.filter(programa=request.user.programa)
+        .annotate(date=TruncDate('created'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    dates_registros = [r['date'] for r in registros]
+    counts_registros = [r['count'] for r in registros]
+
+    fig_registros = px.line(
+        x=dates_registros,
+        y=counts_registros,
+        labels={'x': 'Fecha', 'y': 'Cantidad de Registros'},
+        title='Registros por Día',
+        range_y=[0, max(counts_registros) + 10],
+        markers=True
+    )
+
+    chart_registros = fig_registros.to_html()
+
+    # Gráfico de Derivaciones Emitidas
+    derivaciones = (
+        Planilla_Derivacion.objects.filter(profesional_derivante__programa=request.user.programa)
+        .annotate(date=TruncDate('created'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    dates_derivaciones = [d['date'] for d in derivaciones]
+    counts_derivaciones = [d['count'] for d in derivaciones]
+
+    fig_derivaciones = px.line(
+        x=dates_derivaciones,
+        y=counts_derivaciones,
+        labels={'x': 'Fecha', 'y': 'Cantidad de Derivaciones'},
+        title='Derivaciones Emitidas por Día',
+        range_y=[0, max(counts_derivaciones) + 10],
+        markers=True
+    )
+
+    chart_derivaciones = fig_derivaciones.to_html()
+
+    # Grafico Derivaciones Recibidas
+
+    re_derivaciones = (
+        Planilla_Derivacion.objects.filter(programa_destino=request.user.programa)
+        .annotate(date=TruncDate('created'))
+        .values('date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
+
+    dates_re_derivaciones = [d['date'] for d in derivaciones]
+    counts_re_derivaciones = [d['count'] for d in derivaciones]
+
+    fig_re_derivaciones = px.line(
+        x=dates_re_derivaciones,
+        y=counts_re_derivaciones,
+        labels={'x': 'Fecha', 'y': 'Cantidad de Derivaciones'},
+        title='Derivaciones Emitidas por Día',
+        range_y=[0, max(counts_re_derivaciones) + 10],
+        markers=True
+    )
+
+    chart_re_derivaciones = fig_re_derivaciones.to_html()
+
+    # Pasar gráficos al contexto del template
+    context = {'chart_registros': chart_registros, 'chart_derivaciones': chart_derivaciones, 
+               'chart_re_derivaciones': chart_re_derivaciones}
+    return render(request, "base/graficos.html", context)
