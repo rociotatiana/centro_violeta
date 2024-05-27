@@ -2,5 +2,18 @@
 
 {% block content %}
 
-{{ chart | safe }}
+<h1>Gráficos</h1>
+<div>
+    <h2>Registros por Día</h2>
+    {{ chart_registros|safe }}
+</div>
+<div>
+    <h2>Derivaciones Emitidas por Día</h2>
+    {{ chart_derivaciones|safe }}
+</div>
+
+<div>
+    <h2>Derivaciones Recibidas por Día</h2>
+    {{ chart_re_derivaciones|safe }}
+</div>
 {% endblock content %}

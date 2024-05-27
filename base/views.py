@@ -443,4 +443,4 @@ def graficos(request):
     # Pasar gráficos al contexto del template
     context = {'chart_registros': chart_registros, 'chart_derivaciones': chart_derivaciones, 
                'chart_re_derivaciones': chart_re_derivaciones}
-    return render(request, "base/graficos.html", context)
+    return render(request, "base/chart.html", context)
