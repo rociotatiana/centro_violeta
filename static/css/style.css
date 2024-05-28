@@ -29,8 +29,8 @@ body {
 } 
 
 header, footer {
-  background-color: var(--first-base-color);
-  color: var(--pop-color);
+  background-color: var(--pop-color);
+  color: var(--first-base-color);
   text-align: center;
   padding: 5px 5px;
 
@@ -124,10 +124,10 @@ button:hover, .submit:hover {
 
 nav {
   font-size: 15px;
-  background-color: var(--first-base-color);
+  background-color: var(--pop-color);
 }
 .nav-link {
-  color: var(--pop-color);
+  color: var(--first-base-color);
 }
 
 .nav-link:hover {

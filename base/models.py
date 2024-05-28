@@ -132,14 +132,7 @@ class Comunidad(models.Model):
 
     def __str__(self):
         return self.nombre
-    
-class Informe_indicadores(models.Model):
-    #total_beneficiarias =  count(Benfeiciairais)
-    #situacionlaboral =     #profesiones = beneficiarias.situacion_laboral
-    #nivel_educativo = grafico de niveleducativo
 
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
 
 class Mensaje(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

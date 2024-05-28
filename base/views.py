@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
-from .models import User, Comunidad, Programa, Registro_Intervencion, Beneficiaria, Planilla_Derivacion, Mensaje
+from .models import User, Comunidad, Programa, Registro_Intervencion, Beneficiaria, Planilla_Derivacion, Mensaje, Tematica
 from .forms import IntervencionForm, BeneficiariaForm, DerivacionForm, ComunidadForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -227,9 +227,12 @@ def comunidad(request, pk):
 
 @login_required(login_url='login')
 def explora_comunidades(request):
-    comunidades = Comunidad.objects.all()
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+
+    comunidades = Comunidad.objects.filter(tematicas__nombre__contains=q)
+    tematicas = Tematica.objects.all()
     mensajes_comunidades = Mensaje.objects.all()
-    context = {'comunidades': comunidades, 'mensajes_comunidades': mensajes_comunidades}
+    context = {'comunidades': comunidades, 'mensajes_comunidades': mensajes_comunidades, 'tematicas': tematicas}
     return render(request, 'base/explora_comunidades.html', context)
 
 

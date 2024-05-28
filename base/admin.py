@@ -14,12 +14,13 @@ admin.site.register(Region)
 admin.site.register(Provincia)
 admin.site.register(Comuna)
 
-from .models import Comunidad, Programa, Institucion, Mensaje
+from .models import Comunidad, Programa, Institucion, Mensaje, Tematica
 
 admin.site.register(Programa)
 admin.site.register(Institucion)
 admin.site.register(Comunidad)
 admin.site.register(Mensaje)
+admin.site.register(Tematica)
 
 
 from .models import Registro_Intervencion, Planilla_Derivacion
