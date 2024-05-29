@@ -1,6 +1,27 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
-{{ chart | safe }}
+<div class="container">
+<h1>Gráficos de Beneficiarias</h1>
+<div>
+    <h2>Distribución del Nivel Educativo</h2>
+    {{ chart_nivel_educativo|safe }}
+</div>
+<div>
+    <h2>Distribución de AFP</h2>
+    {{ chart_afp|safe }}
+</div>
+<div>
+    <h2>Distribución del Número de Hijos</h2>
+    {{ chart_num_hijos|safe }}
+</div>
+<div>
+    <h2>Distribución del Seguro Médico</h2>
+    {{ chart_seguro_medico|safe }}
+</div>
+<div>
+    <h2>Distribución de Edad de Beneficiarias</h2>
+    {{ chart_edades|safe }}
+</div>
+</div>
 {% endblock content %}

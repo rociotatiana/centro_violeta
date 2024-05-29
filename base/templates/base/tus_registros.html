@@ -13,7 +13,7 @@
         </div>
         <div class="card-body">
             <p> Monitora: {{ registro.profesional }}</p>
-            <p> Resumen:</p>
+            <p> Resumen: {{ registro.resumen }}</p>
             <p> {{ registro.descripcion }}</p>
             <a href="{% url 'actualizar_intervencion' registro.id %}"><button>Editar</button></a>
             <a href="{% url 'eliminar_intervencion' registro.id %}"><button class="btn-danger">Eliminar</button></a>

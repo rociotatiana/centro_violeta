@@ -297,82 +297,76 @@ from django.db.models.functions import TruncDate
 from django.db.models import Count
 from django.shortcuts import render
 from .models import Registro_Intervencion
+from datetime import date
 
-def chart_registros(request):
-    # Agrupar los registros por fecha y contar la cantidad de registros por cada fecha
-    registros = (
-        Registro_Intervencion.objects.filter(programa=request.user.programa)
-        .annotate(date=TruncDate('created'))
-        .values('date')
-        .annotate(count=Count('id'))
-        .order_by('date')
+def chart_beneficiarias(request):
+    # Obtiene todos los datos de las beneficiarias
+    beneficiarias = Beneficiaria.objects.all()
+
+    # Gráfico en barra de nivel educativo
+    niveles_educativos = beneficiarias.values('nivel_educativo').annotate(count=Count('nivel_educativo')).order_by('nivel_educativo')
+    fig_nivel_educativo = px.bar(
+        x=[ne['nivel_educativo'] for ne in niveles_educativos],
+        y=[ne['count'] for ne in niveles_educativos],
+        labels={'x': 'Nivel Educativo', 'y': 'Cantidad'},
+        title='Distribución del Nivel Educativo'
     )
+    chart_nivel_educativo = fig_nivel_educativo.to_html()
 
-    # Extraer las fechas y los conteos
-    dates = [r['date'] for r in registros]
-    counts = [r['count'] for r in registros]
-
-    # Determinar los límites del eje y 
-    y_min = 0
-    y_max = max(counts) + 10  
-
-    # Crear el gráfico con Plotly, añadiendo marcadores para los puntos
-    fig = px.line(
-        x=dates,
-        y=counts,
-        labels={'x': 'Fecha', 'y': 'Cantidad de Registros'},
-        title='Registros de Intervención por Día',
-        range_y=[y_min, y_max],
-        markers=True
+    # Gráfico en barra de AFP
+    afps = beneficiarias.values('afp').annotate(count=Count('afp')).order_by('afp')
+    fig_afp = px.bar(
+        x=[a['afp'] for a in afps],
+        y=[a['count'] for a in afps],
+        labels={'x': 'AFP', 'y': 'Cantidad'},
+        title='Distribución de AFP'
     )
+    chart_afp = fig_afp.to_html()
 
-    # Convertir el gráfico a HTML
-    chart = fig.to_html()
-
-    # Pasar el gráfico al contexto del template
-    context = {'chart': chart}
-    return render(request, "base/chart.html", context)
-
-
-def chart_derivaciones_emitidas(request):
-    derivaciones = (
-        Planilla_Derivacion.objects.filter(profesional_derivante__programa=request.user.programa)
-        .annotate(date=TruncDate('created'))
-        .values('date')
-        .annotate(count=Count('id'))
-        .order_by('date')
+    # Gráfico en barra de número de hijos
+    num_hijos = beneficiarias.values('numero_hijos').annotate(count=Count('numero_hijos')).order_by('numero_hijos')
+    fig_num_hijos = px.bar(
+        x=[nh['numero_hijos'] for nh in num_hijos],
+        y=[nh['count'] for nh in num_hijos],
+        labels={'x': 'Número de Hijos', 'y': 'Cantidad'},
+        title='Distribución del Número de Hijos'
     )
+    chart_num_hijos = fig_num_hijos.to_html()
 
-    # Extraer las fechas y los conteos
-    dates = [r['date'] for r in derivaciones]
-    counts = [r['count'] for r in derivaciones]
-
-    # Determinar los límites del eje y 
-    y_min = 0
-    y_max = max(counts) + 10  
-
-    # Crear el gráfico con Plotly, añadiendo marcadores para los puntos
-    fig = px.line(
-        x=dates,
-        y=counts,
-        labels={'x': 'Fecha', 'y': 'Cantidad de Derivaciones'},
-        title='Derivaciones por Día',
-        range_y=[y_min, y_max],
-        markers=True
+    # Gráfico en barra de seguro médico
+    seguros_medicos = beneficiarias.values('seguro_medico').annotate(count=Count('seguro_medico')).order_by('seguro_medico')
+    fig_seguro_medico = px.bar(
+        x=[sm['seguro_medico'] for sm in seguros_medicos],
+        y=[sm['count'] for sm in seguros_medicos],
+        labels={'x': 'Seguro Médico', 'y': 'Cantidad'},
+        title='Distribución del Seguro Médico'
     )
+    chart_seguro_medico = fig_seguro_medico.to_html()
 
-    # Convertir el gráfico a HTML
-    chart = fig.to_html()
+    # Histograma de edad de beneficiarias
+    # Calcula la edad basada en la fecha de nacimiento
+    today = date.today()
+    edades = [(today.year - b.fecha_nacimiento.year - ((today.month, today.day) < (b.fecha_nacimiento.month, b.fecha_nacimiento.day))) for b in beneficiarias]
+    fig_edades = px.histogram(
+        x=edades,
+        labels={'x': 'Edad', 'y': 'Cantidad'},
+        title='Distribución de Edad de Beneficiarias'
+    )
+    chart_edades = fig_edades.to_html()
 
-    # Pasar el gráfico al contexto del template
-    context = {'chart': chart}
+    # Pasar gráficos al contexto del template
+    context = {
+        'chart_nivel_educativo': chart_nivel_educativo,
+        'chart_afp': chart_afp,
+        'chart_num_hijos': chart_num_hijos,
+        'chart_seguro_medico': chart_seguro_medico,
+        'chart_edades': chart_edades
+    }
     return render(request, "base/chart2.html", context)
-
-def grafico_derivaciones_recibidas(request):
-    pass
 
 
 def graficos(request):
+    usuario = User.objects.get(id = request.user.id)
     # Gráfico de Registros
     registros = (
         Registro_Intervencion.objects.filter(programa=request.user.programa)
@@ -390,7 +384,7 @@ def graficos(request):
         y=counts_registros,
         labels={'x': 'Fecha', 'y': 'Cantidad de Registros'},
         title='Registros por Día',
-        range_y=[0, max(counts_registros) + 10],
+        range_y=[0, 10],
         markers=True
     )
 
@@ -413,7 +407,7 @@ def graficos(request):
         y=counts_derivaciones,
         labels={'x': 'Fecha', 'y': 'Cantidad de Derivaciones'},
         title='Derivaciones Emitidas por Día',
-        range_y=[0, max(counts_derivaciones) + 10],
+        range_y=[0, 10],
         markers=True
     )
 
@@ -429,21 +423,21 @@ def graficos(request):
         .order_by('date')
     )
 
-    dates_re_derivaciones = [d['date'] for d in derivaciones]
-    counts_re_derivaciones = [d['count'] for d in derivaciones]
+    dates_re_derivaciones = [d['date'] for d in re_derivaciones]
+    counts_re_derivaciones = [d['count'] for d in re_derivaciones]
 
     fig_re_derivaciones = px.line(
         x=dates_re_derivaciones,
         y=counts_re_derivaciones,
         labels={'x': 'Fecha', 'y': 'Cantidad de Derivaciones'},
         title='Derivaciones Emitidas por Día',
-        range_y=[0, max(counts_re_derivaciones) + 10],
+        range_y=[0, 10],
         markers=True
     )
 
     chart_re_derivaciones = fig_re_derivaciones.to_html()
 
     # Pasar gráficos al contexto del template
-    context = {'chart_registros': chart_registros, 'chart_derivaciones': chart_derivaciones, 
+    context = {'usuario':usuario, 'chart_registros': chart_registros, 'chart_derivaciones': chart_derivaciones, 
                'chart_re_derivaciones': chart_re_derivaciones}
     return render(request, "base/chart.html", context)

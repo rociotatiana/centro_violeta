@@ -37,9 +37,7 @@ urlpatterns = [
     path('eliminar_mensaje/<str:pk>', views.eliminarMensaje, name = 'eliminar_mensaje'), 
 
     path('dashboard', views.dashboard, name = "dashboard"),
-    path('chart_registros', views.chart_registros, name = "chart_registros"),
+    path('chart_beneficiarias', views.chart_beneficiarias, name = "chart_beneficiarias"),
     path('graficos', views.graficos, name = "graficos"),
-
-    path('chart_derivaciones_emitidas', views.chart_derivaciones_emitidas, name = "chart_derivaciones_emitidas"),
 
 ]

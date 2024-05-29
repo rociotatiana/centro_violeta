@@ -2,8 +2,9 @@
 
 {% block content %}
 
-<h1>Gráficos</h1>
 <div class="container">
+    <h1>Gráficos Programa {{ registros.programa }}</h1>
+
     <h2>Registros por Día</h2>
     {{ chart_registros|safe }}
 </div>
