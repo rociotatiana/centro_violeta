@@ -2,15 +2,22 @@
 {% block content %}
 
 <div class="container">
-<br>
-    <h1 style="text-align: center;">Bienvenida a Centro Violeta &#128075;</h1> 
-    <h5 style="text-align: center;"> Un sistema de gestión para los programas de prevención en violencia de género</h5>
-    <br>
-    <p style="text-align: center;">Revisa todo lo que puedes hacer aquí {% include 'offcanvas_component.html' %}</p> 
+  <br>
+  <div class="row">
+    <div class="col-sm-6">
+      <br><br>
+      <h1> Un sistema de gestión para los programas de Prevención de Violencia de Género</h1>
+      <br> <br><br>
+      <p style="padding: 0px 00px 0px 50px;">{% include 'offcanvas_component.html' %}</p>
+    </div>
+    <div class="col-sm-6 text-center">
+      <img src="/static/img/home_vector.svg" width="100%">
+    </div>
+    </div>
+    <br><br><br><br>
 
-    <br>
-    <br>
     <div class="row">
+      <h1 style="text-align: center;">Acciones de tu programa</h1>
       <div class="col-sm-4">
         <div class="card text-center">
           <img src="/static/img/beneficiarias_home.svg" class="card-img-top" alt="...">
@@ -19,11 +26,11 @@
             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
             <br>
             <a href="{% url 'tus_beneficiarias' %}">
-            <button>Ver Beneficiarias</button></a>
+              <button>Ver Beneficiarias</button></a>
           </div>
         </div>
       </div>
-  
+
       <div class="col-sm-4">
         <div class="card text-center">
           <img src="/static/img/registros_home.svg" class="card-img-top" alt="...">
@@ -36,7 +43,7 @@
           </div>
         </div>
       </div>
-  
+
       <div class="col-sm-4">
         <div class="card text-center">
           <img src="/static/img/derivaciones_home.svg" class="card-img-top" alt="..." width="300">
@@ -51,18 +58,37 @@
       </div>
     </div>
   </div>
-<br><br>
+  <br><br><br><br>
 <div class="container">
-  <div class="container-fluid"><h2>Explora comunidades</h2><a href="{% url 'explora_comunidades' %}"><button>Ver Todo</button></a></div>
-  <br>
-    {% for comunidad in comunidades %}
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{comunidad.id}} -- <a href="{% url 'comunidad' comunidad.id %}"> {{comunidad.nombre}} </a></h5>
-          <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. </p>
+  <div class="row">
+    <h1 style="text-align: center;"> Mas Acciones</h1>
+
+    <div class="col-sm-6">
+      <div class="card text-center">
+        <img src="/static/img/comunidades_home.svg" class="card-img-top" alt="..." width="300">
+        <div class="card-body rounded-9">
+          <h5 class="card-title">Explorar Comunidades</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
           <br>
-          <a href="{% url 'tus_derivaciones' %}"></a></div></div><br>
-    {% endfor %}
+          <a href="{% url 'explora_comunidades' %}">
+            <button>Ver Comunidades</button></a>
+        </div>
+      </div>
+    </div>
 
-
+    <div class="col-sm-6">
+      <div class="card text-center">
+        <img src="/static/img/indicadores_home.svg" class="card-img-top" alt="..." width="300">
+        <div class="card-body">
+          <h5 class="card-title">Tus Indicadores</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+          <br>
+          <a href="{% url 'dashboard' %}">
+            <button>Ver Dashboard</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}
