@@ -4,48 +4,63 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-            <h4>Buscar por Temáticas</h4>
-            <div>
-                <a href="{% url 'explora_comunidades'%}">Ver todo</a>
-            </div>
-            {% for tematica in tematicas %}
-            <div>
-                <a href="{% url 'explora_comunidades'%}?q={{tematica.nombre}}">{{tematica.nombre}}</a>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="col-sm-6">
-            <h1>Explora Comunidades</h1>
-            <div>
-<a href="{% url 'crear_comunidad' %}"></a><button>Crear una Comunidad</button></a>
-            </div>
-            {% for comunidad in comunidades %}
-            <div class="media">
-                <div class="media-body">
-                    <h5 class="mt-0">{{comunidad.id}}. <a href="{% url 'comunidad' comunidad.id %}"> {{comunidad.nombre}} </a></h5>
-                    <p>{{comunidad.descripcion}}</p>
-                    {% if request.user == comunidad.administrador %}
-                    <a href="{% url 'actualizar_comunidad' comunidad.id %}">Editar</a>
-                    <a href="{% url 'eliminar_comunidad' comunidad.id %}">Eliminar</a>
-                    {% endif %}
+
+            <div class="card text-center">
+                <div class="card-body">
+                    <h4>Buscar por Temáticas</h4>
+                    <div>
+                        <a href="{% url 'explora_comunidades'%}">Ver todo</a>
+                    </div>
+                    {% for tematica in tematicas %}
+                    <div>
+                        <a href="{% url 'explora_comunidades'%}?q={{tematica.nombre}}">
+                            <p class="card-text">{{tematica.nombre}}</p>
+                        </a>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            {% endfor %}
-
+        </div>
+        <div class="col-sm-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h1>Explora Comunidades</h1>
+                    <div>
+                        <a href="{% url 'crear_comunidad' %}"><button>Crear una Comunidad</button></a>
+                    </div>
+                    {% for comunidad in comunidades %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{comunidad.id}}. <a href="{% url 'comunidad' comunidad.id %}">
+                                    {{comunidad.nombre}} </a></h5>
+                            <p>{{comunidad.descripcion}}</p>
+                            {% if request.user == comunidad.administrador %}
+                            <a href="{% url 'actualizar_comunidad' comunidad.id %}">Editar</a>
+                            <a href="{% url 'eliminar_comunidad' comunidad.id %}">Eliminar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
 
         <div class="col-sm-3">
-            <h3>Actividad Reciente</h3>
-            {% for mensaje in mensajes_comunidades %}
-            <div>
-                <small>@{{mensaje.usuario}} {{mensaje.created|timesince}}</small>
-                <small>respondio a "{{mensaje.comunidad}}"</small>
-                <p>{{mensaje}}</p>
-                {% if request.user == mensaje.usuario %}
-                <a href="{% url 'eliminar_mensaje' mensaje.id %}">Eliminar</a>
-                {% endif %}
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>Actividad Reciente</h3>
+                    {% for mensaje in mensajes_comunidades %}
+                    <div>
+                        <small>{{mensaje.usuario}} {{mensaje.created|timesince}}</small>
+                        <small>respondio a "{{mensaje.comunidad}}"</small>
+                        <p>{{mensaje}}</p>
+                        {% if request.user == mensaje.usuario %}
+                        <a href="{% url 'eliminar_mensaje' mensaje.id %}">Eliminar</a>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>

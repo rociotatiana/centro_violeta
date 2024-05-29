@@ -7,11 +7,11 @@
             <h1>{{comunidad.nombre}}</h1>
             <p>{{comunidad.descripcion}}</p>
 
-            <div class="comment-wrapper">
+            <div class="card">
                 <h3>Conversacion</h3>
                 <hr>
                 {% for mensaje in comunidad_mensajes %}
-                <div>
+                <div class="card-body">
                     {% if request.user == mensaje.usuario %}
                     <a href="{% url 'eliminar_mensaje' mensaje.id %}">Eliminar</a>
                     {% endif %}
@@ -20,7 +20,7 @@
                     <hr>
                 </div>
                 {% endfor %}
-            </div>
+            
 
             <div class="comment-form">
                 <form method="POST" action="">
@@ -29,9 +29,10 @@
                 </form>
             </div>
         </div>
+        </div>
         <div class="col-sm-4">
             <h3>Participantes</h3>
-            {% for usuarios in participantes %}
+            {% for usuario in participantes %}
             <div>
                 <p>{{usuario.nombre}}</p>
             </div>
@@ -39,7 +40,6 @@
             {% endfor %}
         </div>
     </div>
-    <div class="col-sm-4"></div>
 </div>
 
 {% endblock content %}

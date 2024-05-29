@@ -301,7 +301,7 @@ from datetime import date
 
 def chart_beneficiarias(request):
     # Obtiene todos los datos de las beneficiarias
-    beneficiarias = Beneficiaria.objects.all()
+    beneficiarias = Beneficiaria.objects.filter(profesional_que_ingresa__programa = request.user.programa)
 
     # Gráfico en barra de nivel educativo
     niveles_educativos = beneficiarias.values('nivel_educativo').annotate(count=Count('nivel_educativo')).order_by('nivel_educativo')
@@ -347,7 +347,7 @@ def chart_beneficiarias(request):
     # Calcula la edad basada en la fecha de nacimiento
     today = date.today()
     edades = [(today.year - b.fecha_nacimiento.year - ((today.month, today.day) < (b.fecha_nacimiento.month, b.fecha_nacimiento.day))) for b in beneficiarias]
-    fig_edades = px.histogram(
+    fig_edades = px.bar(
         x=edades,
         labels={'x': 'Edad', 'y': 'Cantidad'},
         title='Distribución de Edad de Beneficiarias'
