@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from collections import Counter
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.db.models import Q
@@ -300,27 +301,28 @@ from .models import Registro_Intervencion
 from datetime import date
 
 def chart_beneficiarias(request):
-    # Obtiene todos los datos de las beneficiarias
     beneficiarias = Beneficiaria.objects.filter(profesional_que_ingresa__programa = request.user.programa)
-
+    colores_pastel = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF']
     # Gráfico en barra de nivel educativo
     niveles_educativos = beneficiarias.values('nivel_educativo').annotate(count=Count('nivel_educativo')).order_by('nivel_educativo')
     fig_nivel_educativo = px.bar(
         x=[ne['nivel_educativo'] for ne in niveles_educativos],
         y=[ne['count'] for ne in niveles_educativos],
         labels={'x': 'Nivel Educativo', 'y': 'Cantidad'},
-        title='Distribución del Nivel Educativo'
-    )
+        title='Distribución del Nivel Educativo',
+        color_discrete_sequence=['#FFB3BA']
+    ) 
     chart_nivel_educativo = fig_nivel_educativo.to_html()
 
     # Gráfico en barra de AFP
     afps = beneficiarias.values('afp').annotate(count=Count('afp')).order_by('afp')
-    fig_afp = px.bar(
-        x=[a['afp'] for a in afps],
-        y=[a['count'] for a in afps],
-        labels={'x': 'AFP', 'y': 'Cantidad'},
-        title='Distribución de AFP'
-    )
+    fig_afp = px.pie(
+        names=[a['afp'] for a in afps],
+        values=[a['count'] for a in afps],
+        labels={'afp': 'AFP', 'count': 'Cantidad'},
+        title='Distribución de AFP',
+        color_discrete_sequence= colores_pastel
+)
     chart_afp = fig_afp.to_html()
 
     # Gráfico en barra de número de hijos
@@ -329,31 +331,44 @@ def chart_beneficiarias(request):
         x=[nh['numero_hijos'] for nh in num_hijos],
         y=[nh['count'] for nh in num_hijos],
         labels={'x': 'Número de Hijos', 'y': 'Cantidad'},
-        title='Distribución del Número de Hijos'
+        title='Distribución del Número de Hijos',
+        color_discrete_sequence=['#FFFFBA']
     )
     chart_num_hijos = fig_num_hijos.to_html()
 
     # Gráfico en barra de seguro médico
     seguros_medicos = beneficiarias.values('seguro_medico').annotate(count=Count('seguro_medico')).order_by('seguro_medico')
-    fig_seguro_medico = px.bar(
-        x=[sm['seguro_medico'] for sm in seguros_medicos],
-        y=[sm['count'] for sm in seguros_medicos],
-        labels={'x': 'Seguro Médico', 'y': 'Cantidad'},
-        title='Distribución del Seguro Médico'
-    )
+    fig_seguro_medico = px.pie(
+    names=[sm['seguro_medico'] for sm in seguros_medicos],
+    values=[sm['count'] for sm in seguros_medicos],
+    labels={'seguro_medico': 'Seguro Médico', 'count': 'Cantidad'},
+    title='Distribución del Seguro Médico',
+    color_discrete_sequence= colores_pastel
+)
     chart_seguro_medico = fig_seguro_medico.to_html()
 
-    # Histograma de edad de beneficiarias
+    # Barra de edad de beneficiarias
     # Calcula la edad basada en la fecha de nacimiento
+    # Calcular edades
     today = date.today()
     edades = [(today.year - b.fecha_nacimiento.year - ((today.month, today.day) < (b.fecha_nacimiento.month, b.fecha_nacimiento.day))) for b in beneficiarias]
-    fig_edades = px.bar(
-        x=edades,
-        labels={'x': 'Edad', 'y': 'Cantidad'},
-        title='Distribución de Edad de Beneficiarias'
-    )
-    chart_edades = fig_edades.to_html()
 
+# Contar ocurrencias de cada edad
+    conteo_edades = Counter(edades)
+    edades_unicas = list(conteo_edades.keys())
+    cantidad_edades = list(conteo_edades.values())
+
+# Crear gráfico de barras
+    fig_edades = px.bar(
+        x=edades_unicas,
+        y=cantidad_edades,
+        labels={'x': 'Edad', 'y': 'Cantidad'},
+        title='Distribución de Edad de Beneficiarias',
+        color_discrete_sequence=['#BAE1FF']
+    )
+
+# Convertir el gráfico a HTML
+    chart_edades = fig_edades.to_html()
     # Pasar gráficos al contexto del template
     context = {
         'chart_nivel_educativo': chart_nivel_educativo,

@@ -13,8 +13,8 @@
         {% for derivacion in derivaciones %}
         <div class="card">
             <div class="card-title">
-            <h5>Desde Programa {{derivacion.profesional_derivante.programa}} - {{derivacion.profesional_derivante.programa.comuna}}</h5>
-            <h4>Derivación a {{ derivacion.programa_destino }}-- {{ derivacion.beneficiaria }} {{ derivacion.beneficiaria.nombre }} {{ derivacion.beneficiaria.apellido }}  </h4>
+            <h5>Desde Programa {{derivacion.profesional_derivante.programa}} </h5>
+            <h4>Derivación a {{ derivacion.programa_destino }} | {{ derivacion.beneficiaria }} </h4>
         </div>
         <div class="card-body">
             <p> Resumen: {{ derivacion.descripcion }} </p>
