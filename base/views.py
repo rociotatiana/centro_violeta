@@ -302,7 +302,7 @@ from datetime import date
 
 def chart_beneficiarias(request):
     beneficiarias = Beneficiaria.objects.filter(profesional_que_ingresa__programa = request.user.programa)
-    colores_pastel = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF']
+    colores_pastel = ['#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF', '#D29BFD']
     # Gráfico en barra de nivel educativo
     niveles_educativos = beneficiarias.values('nivel_educativo').annotate(count=Count('nivel_educativo')).order_by('nivel_educativo')
     fig_nivel_educativo = px.bar(
@@ -367,6 +367,16 @@ def chart_beneficiarias(request):
         color_discrete_sequence=['#BAE1FF']
     )
 
+# Gráfico de torta de situación laboral
+    situaciones_laborales = beneficiarias.values('situacion_laboral').annotate(count=Count('situacion_laboral')).order_by('situacion_laboral')
+    fig_situacion_laboral = px.pie(
+        names=[sl['situacion_laboral'] for sl in situaciones_laborales],
+        values=[sl['count'] for sl in situaciones_laborales],
+        title='Distribución de Situación Laboral',
+        color_discrete_sequence=colores_pastel
+    )
+    chart_situacion_laboral = fig_situacion_laboral.to_html()
+
 # Convertir el gráfico a HTML
     chart_edades = fig_edades.to_html()
     # Pasar gráficos al contexto del template
@@ -375,7 +385,8 @@ def chart_beneficiarias(request):
         'chart_afp': chart_afp,
         'chart_num_hijos': chart_num_hijos,
         'chart_seguro_medico': chart_seguro_medico,
-        'chart_edades': chart_edades
+        'chart_edades': chart_edades,
+        'chart_situacion_laboral': chart_situacion_laboral
     }
     return render(request, "base/chart2.html", context)
 
