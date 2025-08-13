@@ -31,10 +31,10 @@ def loginPage(request):
         password = request.POST.get('password')
 
         try:
-            user = User.objects.get(email=user.email)
-        except:
-            messages.error(request, print('El usuario no existe'))
-        
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            messages.error(request, 'El usuario no existe')
+
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
