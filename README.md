@@ -1,22 +1,36 @@
+### Requisitos Previos
+
+Asegúrate de tener instalado:
+
+- **Python 3.10+**
+- **pip** 
+
 ### Clonar el repositorio
 
---> Clona el repositorio escribiendo el siguiente código :
+Clona el repositorio escribiendo el siguiente código :
 ```bash
 git clone https://github.com/rociotatiana/centro_violeta.git
 
 ```
 
---> Crea y activa un ambiente de desarrollo, puede ser con [miniconda](https://docs.anaconda.com/free/miniconda/index.html):
+---
+
+### Crear el entorno virtual
+
+Ejecuta el siguiente comando en la raíz del proyecto para crear un entorno virtual:
+
 ```bash
-conda create myenv
-conda activate myenv
+python3.10 -m venv .venv
 ```
 
 
---> Instala los requerimientos:
-Instala Django
+
+### 📦 Instalar dependencias
+
+Con el entorno virtual activo, instala las dependencias listadas en `requirements.txt`:
+
 ```bash
-sudo apt install python3-django
+pip install -r requirements.txt
 ```
 
 
